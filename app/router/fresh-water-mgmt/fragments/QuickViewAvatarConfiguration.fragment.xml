@@ -1,0 +1,38 @@
+<core:FragmentDefinition
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout"
+    xmlns:commons="sap.suite.ui.commons"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:core="sap.ui.core">
+    <QuickView placement="Bottom">
+		<QuickViewPage
+			
+			header="Hello ..!!"
+			title="Facility Manager "
+			titleUrl="https://www.sap.com"
+			description="Sustainability Manager">
+			<avatar>
+				<Avatar
+					src=""
+                    displayShape="Circle"
+					press=".handleAvatarPress"
+				/>
+			</avatar>
+			<!-- <QuickViewGroup
+				heading="Details"
+				>
+				<QuickViewGroupElement
+					label="Ph No"
+					value="+91-9884785269"
+					url="www.sap.com"
+					type="Mobile"
+					pageLinkId=""
+					emailSubject="Email"
+					target="" />
+			</QuickViewGroup> -->
+		</QuickViewPage>
+	</QuickView>
+</core:FragmentDefinition>

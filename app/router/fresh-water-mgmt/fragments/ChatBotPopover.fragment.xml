@@ -1,0 +1,32 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Popover
+		id="myPopover"
+		title="Aquagenie"
+		modal = "true"
+		class="sapUiContentPadding"
+		placement="Top"
+		titleAlignment ="Center" >
+		<!-- <beginButton>
+			<Button text="Action-A" press="handleCloseButton" />
+		</beginButton> -->
+		<endButton>
+			<Button icon="sap-icon://sys-cancel" tooltip="End Session" press="handleClosePopUpButton" />
+		</endButton>
+		<content>
+			<VBox width="35rem">
+				<List id="idListOfQandA" items="{json>/qAndAItems}" visible="false" noDataText="Hi Please post a query to help you" >
+					<FeedListItem sender="{json>query}" text="{json>answer}"/>
+					
+				</List>
+				<!-- <VBox items="{json>/}" visible="false">
+					<Label text="{json>query}"/>
+				</VBox> -->
+				
+				<!-- <Link id="idDocLink" text ="Open this doc" href="img/dummy.pdf" target="_blank" visible="false"/> -->
+				<FeedInput id ="idUserQuery" post="onPost"  class="sapUiSmallMarginTopBottom" />
+			</VBox>
+		</content>
+	</Popover>
+</core:FragmentDefinition>

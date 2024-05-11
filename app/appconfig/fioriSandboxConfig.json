@@ -1,0 +1,10 @@
+{
+	"applications": {
+		"fresh-water-mgmt": {
+			"additionalInformation": "SAPUI5.Component=com.hcltech.sapeu.fresh-water-mgmt",
+			"applicationType": "URL",
+			"url": "./fresh-water-mgmt",
+			"title": "AquaSphere"
+		}
+	}
+}

@@ -1,0 +1,35 @@
+<mvc:View controllerName="com.hcltech.sapeu.fresh-water-mgmt.controller.App"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.f"
+	xmlns:w="sap.ui.integration.widgets"
+	xmlns:cssgrid="sap.ui.layout.cssgrid"
+	xmlns="sap.m">
+	<f:ShellBar
+		title="AquaSphere"
+		secondTitle="{
+			path:'json>/CurrentDate',
+			type: 'sap.ui.model.type.Date',
+			formatOptions: {
+				style: 'medium'
+			}
+		}"
+		homeIcon="img/company.png"
+		showCopilot="true"
+		showSearch="false"
+		showNotifications="false"
+		showProductSwitcher="true"
+		notificationsNumber="2">
+		<f:menu>
+			<Menu>
+				<MenuItem text="Home" icon="sap-icon://home" press="navToHome" />
+			</Menu>
+		</f:menu>
+		<f:profile>
+			<f:Avatar initials="FM"  press="onPressAvatar"/>
+		</f:profile>
+	</f:ShellBar>
+	
+	<App id="rootApp" height="calc(100vh - 3.5rem)" backgroundColor="transparent">
+	</App>
+</mvc:View>

@@ -1,0 +1,111 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
+	<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0">
+		<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="Chinook">
+			<EntityType Name="albums">
+				<Key><PropertyRef Name="AlbumId"/></Key><Property Name="AlbumId" Type="Edm.Int64" Nullable="false"/><Property Name="Title" Type="Edm.String" Nullable="false"/><Property Name="ArtistId" Type="Edm.Int64" Nullable="false"/><NavigationProperty Name="tracks" FromRole="albumsSet" ToRole="tracksSet" Relationship="Chinook.FK_tracksSet_albumsSet"/><NavigationProperty Name="artists" FromRole="albumsSet" ToRole="artistsSet" Relationship="Chinook.FK_albumsSet_artistsSet"/></EntityType>
+			<EntityType Name="artists">
+				<Key><PropertyRef Name="ArtistId"/></Key><Property Name="ArtistId" Type="Edm.Int64" Nullable="false"/><Property Name="Name" Type="Edm.String" Nullable="true"/><NavigationProperty Name="albums" FromRole="artistsSet" ToRole="albumsSet" Relationship="Chinook.FK_albumsSet_artistsSet"/></EntityType>
+			<EntityType Name="customers">
+				<Key><PropertyRef Name="CustomerId"/></Key><Property Name="CustomerId" Type="Edm.Int64" Nullable="false"/><Property Name="FirstName" Type="Edm.String" Nullable="false"/><Property Name="LastName" Type="Edm.String" Nullable="false"/><Property Name="Company" Type="Edm.String" Nullable="true"/><Property Name="Address" Type="Edm.String" Nullable="true"/><Property Name="City" Type="Edm.String" Nullable="true"/><Property Name="State" Type="Edm.String" Nullable="true"/><Property Name="Country" Type="Edm.String" Nullable="true"/><Property Name="PostalCode" Type="Edm.String" Nullable="true"/><Property Name="Phone" Type="Edm.String" Nullable="true"/><Property Name="Fax" Type="Edm.String" Nullable="true"/><Property Name="Email" Type="Edm.String" Nullable="false"/><Property Name="SupportRepId" Type="Edm.Int64" Nullable="true"/><NavigationProperty Name="invoices" FromRole="customersSet" ToRole="invoicesSet" Relationship="Chinook.FK_invoicesSet_customersSet"/><NavigationProperty Name="employees" FromRole="customersSet" ToRole="employeesSet" Relationship="Chinook.FK_customersSet_employeesSet"/></EntityType>
+			<EntityType Name="employees">
+				<Key><PropertyRef Name="EmployeeId"/></Key><Property Name="EmployeeId" Type="Edm.Int64" Nullable="false"/><Property Name="LastName" Type="Edm.String" Nullable="false"/><Property Name="FirstName" Type="Edm.String" Nullable="false"/><Property Name="Title" Type="Edm.String" Nullable="true"/><Property Name="ReportsTo" Type="Edm.Int64" Nullable="true"/><Property Name="BirthDate" Type="Edm.String" Nullable="true"/><Property Name="HireDate" Type="Edm.String" Nullable="true"/><Property Name="Address" Type="Edm.String" Nullable="true"/><Property Name="City" Type="Edm.String" Nullable="true"/><Property Name="State" Type="Edm.String" Nullable="true"/><Property Name="Country" Type="Edm.String" Nullable="true"/><Property Name="PostalCode" Type="Edm.String" Nullable="true"/><Property Name="Phone" Type="Edm.String" Nullable="true"/><Property Name="Fax" Type="Edm.String" Nullable="true"/><Property Name="Email" Type="Edm.String" Nullable="true"/><NavigationProperty Name="customers" FromRole="employeesSet" ToRole="customersSet" Relationship="Chinook.FK_customersSet_employeesSet"/><NavigationProperty Name="employees" FromRole="employeesSet" ToRole="employeesSet" Relationship="Chinook.FK_employeesSet_employeesSet"/><NavigationProperty Name="employees" FromRole="employeesSet" ToRole="employeesSet" Relationship="Chinook.FK_employeesSet_employeesSet"/></EntityType>
+			<EntityType Name="genres">
+				<Key><PropertyRef Name="GenreId"/></Key><Property Name="GenreId" Type="Edm.Int64" Nullable="false"/><Property Name="Name" Type="Edm.String" Nullable="true"/><NavigationProperty Name="tracks" FromRole="genresSet" ToRole="tracksSet" Relationship="Chinook.FK_tracksSet_genresSet"/></EntityType>
+			<EntityType Name="invoices">
+				<Key><PropertyRef Name="InvoiceId"/></Key><Property Name="InvoiceId" Type="Edm.Int64" Nullable="false"/><Property Name="CustomerId" Type="Edm.Int64" Nullable="false"/><Property Name="InvoiceDate" Type="Edm.String" Nullable="false"/><Property Name="BillingAddress" Type="Edm.String" Nullable="true"/><Property Name="BillingCity" Type="Edm.String" Nullable="true"/><Property Name="BillingState" Type="Edm.String" Nullable="true"/><Property Name="BillingCountry" Type="Edm.String" Nullable="true"/><Property Name="BillingPostalCode" Type="Edm.String" Nullable="true"/><Property Name="Total" Type="Edm.String" Nullable="false"/><NavigationProperty Name="customers" FromRole="invoicesSet" ToRole="customersSet" Relationship="Chinook.FK_invoicesSet_customersSet"/><NavigationProperty Name="invoice_items" FromRole="invoicesSet" ToRole="invoice_itemsSet"
+					Relationship="Chinook.FK_invoice_itemsSet_invoicesSet"/></EntityType>
+			<EntityType Name="invoice_items">
+				<Key><PropertyRef Name="InvoiceLineId"/></Key><Property Name="InvoiceLineId" Type="Edm.Int64" Nullable="false"/><Property Name="InvoiceId" Type="Edm.Int64" Nullable="false"/><Property Name="TrackId" Type="Edm.Int64" Nullable="false"/><Property Name="UnitPrice" Type="Edm.String" Nullable="false"/><Property Name="Quantity" Type="Edm.Int64" Nullable="false"/><NavigationProperty Name="invoices" FromRole="invoice_itemsSet" ToRole="invoicesSet" Relationship="Chinook.FK_invoice_itemsSet_invoicesSet"/><NavigationProperty Name="tracks" FromRole="invoice_itemsSet" ToRole="tracksSet" Relationship="Chinook.FK_invoice_itemsSet_tracksSet"/></EntityType>
+			<EntityType Name="media_types">
+				<Key><PropertyRef Name="MediaTypeId"/></Key><Property Name="MediaTypeId" Type="Edm.Int64" Nullable="false"/><Property Name="Name" Type="Edm.String" Nullable="true"/><NavigationProperty Name="tracks" FromRole="media_typesSet" ToRole="tracksSet" Relationship="Chinook.FK_tracksSet_media_typesSet"/></EntityType>
+			<EntityType Name="playlists">
+				<Key><PropertyRef Name="PlaylistId"/></Key><Property Name="PlaylistId" Type="Edm.Int64" Nullable="false"/><Property Name="Name" Type="Edm.String" Nullable="true"/><NavigationProperty Name="playlist_track" FromRole="playlistsSet" ToRole="playlist_trackSet"
+					Relationship="Chinook.FK_playlist_trackSet_playlistsSet"/></EntityType>
+			<EntityType Name="playlist_track">
+				<Key><PropertyRef Name="PlaylistId"/><PropertyRef Name="TrackId"/></Key><Property Name="PlaylistId" Type="Edm.Int64" Nullable="false"/><Property Name="TrackId" Type="Edm.Int64" Nullable="false"/><NavigationProperty Name="playlists" FromRole="playlist_trackSet" ToRole="playlistsSet"
+					Relationship="Chinook.FK_playlist_trackSet_playlistsSet"/><NavigationProperty Name="tracks" FromRole="playlist_trackSet" ToRole="tracksSet" Relationship="Chinook.FK_playlist_trackSet_tracksSet"/></EntityType>
+			<EntityType Name="tracks">
+				<Key><PropertyRef Name="TrackId"/></Key><Property Name="TrackId" Type="Edm.Int64" Nullable="false"/><Property Name="Name" Type="Edm.String" Nullable="false"/><Property Name="AlbumId" Type="Edm.Int64" Nullable="true"/><Property Name="MediaTypeId" Type="Edm.Int64" Nullable="false"/><Property Name="GenreId" Type="Edm.Int64" Nullable="true"/><Property Name="Composer" Type="Edm.String" Nullable="true"/><Property Name="Milliseconds" Type="Edm.Int64" Nullable="false"/><Property Name="Bytes" Type="Edm.Int64" Nullable="true"/><Property Name="UnitPrice" Type="Edm.String" Nullable="false"/><NavigationProperty Name="albums" FromRole="tracksSet" ToRole="albumsSet" Relationship="Chinook.FK_tracksSet_albumsSet"/><NavigationProperty Name="genres" FromRole="tracksSet" ToRole="genresSet" Relationship="Chinook.FK_tracksSet_genresSet"/><NavigationProperty Name="media_types" FromRole="tracksSet" ToRole="media_typesSet" Relationship="Chinook.FK_tracksSet_media_typesSet"/><NavigationProperty Name="invoice_items" FromRole="tracksSet" ToRole="invoice_itemsSet" Relationship="Chinook.FK_invoice_itemsSet_tracksSet"/><NavigationProperty Name="playlist_track" FromRole="tracksSet" ToRole="playlist_trackSet"
+					Relationship="Chinook.FK_playlist_trackSet_tracksSet"/></EntityType>
+			<Association Name="FK_tracksSet_albumsSet"><End Role="albumsSet" Type="Chinook.albums" Multiplicity="1"/><End Role="tracksSet" Type="Chinook.tracks" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="albumsSet"><PropertyRef Name="AlbumId"/></Principal>
+					<Dependent Role="tracksSet"><PropertyRef Name="AlbumId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_albumsSet_artistsSet"><End Role="artistsSet" Type="Chinook.artists" Multiplicity="1"/><End Role="albumsSet" Type="Chinook.albums" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="artistsSet"><PropertyRef Name="ArtistId"/></Principal>
+					<Dependent Role="albumsSet"><PropertyRef Name="ArtistId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_invoicesSet_customersSet"><End Role="customersSet" Type="Chinook.customers" Multiplicity="1"/><End Role="invoicesSet" Type="Chinook.invoices" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="customersSet"><PropertyRef Name="CustomerId"/></Principal>
+					<Dependent Role="invoicesSet"><PropertyRef Name="CustomerId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_customersSet_employeesSet"><End Role="employeesSet" Type="Chinook.employees" Multiplicity="1"/><End Role="customersSet" Type="Chinook.customers" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="employeesSet"><PropertyRef Name="EmployeeId"/></Principal>
+					<Dependent Role="customersSet"><PropertyRef Name="SupportRepId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_employeesSet_employeesSet"><End Role="employeesSet1" Type="Chinook.employees" Multiplicity="1"/><End Role="employeesSet" Type="Chinook.employees" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="employeesSet1"><PropertyRef Name="EmployeeId"/></Principal>
+					<Dependent Role="employeesSet"><PropertyRef Name="ReportsTo"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_tracksSet_genresSet"><End Role="genresSet" Type="Chinook.genres" Multiplicity="1"/><End Role="tracksSet" Type="Chinook.tracks" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="genresSet"><PropertyRef Name="GenreId"/></Principal>
+					<Dependent Role="tracksSet"><PropertyRef Name="GenreId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_invoice_itemsSet_invoicesSet"><End Role="invoicesSet" Type="Chinook.invoices" Multiplicity="1"/><End Role="invoice_itemsSet" Type="Chinook.invoice_items" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="invoicesSet"><PropertyRef Name="InvoiceId"/></Principal>
+					<Dependent Role="invoice_itemsSet"><PropertyRef Name="InvoiceId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_tracksSet_media_typesSet"><End Role="media_typesSet" Type="Chinook.media_types" Multiplicity="1"/><End Role="tracksSet" Type="Chinook.tracks" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="media_typesSet"><PropertyRef Name="MediaTypeId"/></Principal>
+					<Dependent Role="tracksSet"><PropertyRef Name="MediaTypeId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_playlist_trackSet_playlistsSet"><End Role="playlistsSet" Type="Chinook.playlists" Multiplicity="1"/><End Role="playlist_trackSet" Type="Chinook.playlist_track" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="playlistsSet"><PropertyRef Name="PlaylistId"/></Principal>
+					<Dependent Role="playlist_trackSet"><PropertyRef Name="PlaylistId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_invoice_itemsSet_tracksSet"><End Role="tracksSet" Type="Chinook.tracks" Multiplicity="1"/><End Role="invoice_itemsSet" Type="Chinook.invoice_items" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="tracksSet"><PropertyRef Name="TrackId"/></Principal>
+					<Dependent Role="invoice_itemsSet"><PropertyRef Name="TrackId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="FK_playlist_trackSet_tracksSet"><End Role="tracksSet" Type="Chinook.tracks" Multiplicity="1"/><End Role="playlist_trackSet" Type="Chinook.playlist_track" Multiplicity="*"/>
+				<ReferentialConstraint>
+					<Principal Role="tracksSet"><PropertyRef Name="TrackId"/></Principal>
+					<Dependent Role="playlist_trackSet"><PropertyRef Name="TrackId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="Chinook_entities" m:IsDefaultEntityContainer="true"><EntitySet Name="albumsSet" EntityType="Chinook.albums"/><EntitySet Name="artistsSet" EntityType="Chinook.artists"/><EntitySet Name="customersSet" EntityType="Chinook.customers"/><EntitySet Name="employeesSet" EntityType="Chinook.employees"/><EntitySet Name="genresSet" EntityType="Chinook.genres"/><EntitySet Name="invoicesSet" EntityType="Chinook.invoices"/><EntitySet Name="invoice_itemsSet" EntityType="Chinook.invoice_items"/><EntitySet Name="media_typesSet" EntityType="Chinook.media_types"/><EntitySet Name="playlistsSet" EntityType="Chinook.playlists"/><EntitySet Name="playlist_trackSet" EntityType="Chinook.playlist_track"/><EntitySet Name="tracksSet" EntityType="Chinook.tracks"/>
+				<AssociationSet Name="FK_tracksSet_albumsSet" Association="Chinook.FK_tracksSet_albumsSet"><End Role="tracksSet" EntitySet="tracksSet"/><End Role="albumsSet" EntitySet="albumsSet"/></AssociationSet>
+				<AssociationSet Name="FK_albumsSet_artistsSet" Association="Chinook.FK_albumsSet_artistsSet"><End Role="albumsSet" EntitySet="albumsSet"/><End Role="artistsSet" EntitySet="artistsSet"/></AssociationSet>
+				<AssociationSet Name="FK_invoicesSet_customersSet" Association="Chinook.FK_invoicesSet_customersSet"><End Role="invoicesSet" EntitySet="invoicesSet"/><End Role="customersSet" EntitySet="customersSet"/></AssociationSet>
+				<AssociationSet Name="FK_customersSet_employeesSet" Association="Chinook.FK_customersSet_employeesSet"><End Role="customersSet" EntitySet="customersSet"/><End Role="employeesSet" EntitySet="employeesSet"/></AssociationSet>
+				<AssociationSet Name="FK_employeesSet_employeesSet" Association="Chinook.FK_employeesSet_employeesSet"><End Role="employeesSet" EntitySet="employeesSet"/><End Role="employeesSet1" EntitySet="employeesSet"/></AssociationSet>
+				<AssociationSet Name="FK_tracksSet_genresSet" Association="Chinook.FK_tracksSet_genresSet"><End Role="tracksSet" EntitySet="tracksSet"/><End Role="genresSet" EntitySet="genresSet"/></AssociationSet>
+				<AssociationSet Name="FK_invoice_itemsSet_invoicesSet" Association="Chinook.FK_invoice_itemsSet_invoicesSet"><End Role="invoice_itemsSet" EntitySet="invoice_itemsSet"/><End Role="invoicesSet" EntitySet="invoicesSet"/></AssociationSet>
+				<AssociationSet Name="FK_tracksSet_media_typesSet" Association="Chinook.FK_tracksSet_media_typesSet"><End Role="tracksSet" EntitySet="tracksSet"/><End Role="media_typesSet" EntitySet="media_typesSet"/></AssociationSet>
+				<AssociationSet Name="FK_playlist_trackSet_playlistsSet" Association="Chinook.FK_playlist_trackSet_playlistsSet"><End Role="playlist_trackSet" EntitySet="playlist_trackSet"/><End Role="playlistsSet" EntitySet="playlistsSet"/></AssociationSet>
+				<AssociationSet Name="FK_invoice_itemsSet_tracksSet" Association="Chinook.FK_invoice_itemsSet_tracksSet"><End Role="invoice_itemsSet" EntitySet="invoice_itemsSet"/><End Role="tracksSet" EntitySet="tracksSet"/></AssociationSet>
+				<AssociationSet Name="FK_playlist_trackSet_tracksSet" Association="Chinook.FK_playlist_trackSet_tracksSet"><End Role="playlist_trackSet" EntitySet="playlist_trackSet"/><End Role="tracksSet" EntitySet="tracksSet"/></AssociationSet>
+			</EntityContainer>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

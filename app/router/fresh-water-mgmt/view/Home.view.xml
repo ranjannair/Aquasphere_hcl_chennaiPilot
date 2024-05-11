@@ -1,0 +1,294 @@
+<mvc:View controllerName="com.hcltech.sapeu.fresh-water-mgmt.controller.Home" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:table="sap.ui.table"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:card="sap.f.cards"
+	xmlns:l="sap.ui.layout"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:mc="sap.suite.ui.microchart"
+	xmlns:sl="sap.ui.comp.navpopover"
+	xmlns:smartchart="sap.ui.comp.smartchart"
+	>
+	<Page showFooter="true" showHeader="false">
+		<!-- <ScrollContainer vertical="true" height="calc(100vh - 2.8rem)"> -->
+			<l:Grid hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+				<f:Card>
+					<f:header>
+						<card:Header title="Annual Water Conservation Index" subtitle="1841 KL Water Conserved in {json>/GlobalWaterConservationIndex/1/Year}"/>
+					</f:header>
+					<f:content>
+						<HBox width="100%">
+						<mc:ColumnMicroChart id="waterConservationIndexChart" size="M" press="press" class="waterConservationIndexChart sapUiTinyMarginBeginEnd sapUiSmallMarginTopBottom">
+							<mc:columns>
+								<mc:ColumnMicroChartData value="18411330" color="#525DF4"/>
+								<mc:ColumnMicroChartData value="4602832" color="#19A979"/>
+							</mc:columns>
+							<mc:leftBottomLabel>
+								<mc:ColumnMicroChartLabel label="Water Used"/>
+							</mc:leftBottomLabel>
+							<mc:rightBottomLabel>
+								<mc:ColumnMicroChartLabel label="Water Conserved"/>
+							</mc:rightBottomLabel>
+						</mc:ColumnMicroChart>
+						<VBox class="sapUiTinyMarginBegin">
+							<NumericContent tooltip="75.42 in 2021 vs 68.71 in 2022" value="9.28" scale="%" withMargin="false" class=""
+								valueColor="Good" indicator="Up"
+								press="press" />
+							<Text text="Organizational average across geo 75.42 in 2021 vs 68.71 in 2022" class="globalGrowthIndex"/>
+						</VBox>
+						
+						</HBox>
+					</f:content>
+				</f:Card>
+				<f:Card>
+					<f:header>
+						<card:Header title="Water sources" subtitle="consumption from different sources" />
+					</f:header>
+					<f:content>
+						<VBox class="sapUiSmallMargin">
+						<mc:ComparisonMicroChart maxValue="100" scale="%" view="Wide" press="press" width="16rem" shrinkable="true">
+							<mc:data>
+								<mc:ComparisonMicroChartData	title="Conserved Water" value="22"  color="Good"/>
+								<mc:ComparisonMicroChartData	title="Municipal Water" value="50" color="Critical"/>
+								<mc:ComparisonMicroChartData	title="Third Party" value="28" color="Error"/>
+								<!-- <mc:ComparisonMicroChartData	title="Desalinated Water" value="10"  color="Good"/> -->
+							</mc:data>
+						</mc:ComparisonMicroChart>
+						<Link text="More Info..." press="openInterCompanyComparision"/>
+						</VBox>
+					</f:content>
+				</f:Card>
+				<f:Card>
+					<f:header>
+						<card:Header title="Area utilized for Rain Water Harvesting" subtitle=""/>
+					</f:header>
+					<f:content>
+						<VBox class="sapUiSmallMargin" binding="{json>/RainWaterHarvestingInfrastructureCumulatives/0}">
+							<mc:ComparisonMicroChart size="M" scale="Sq.mtr" press="press" width="16rem" shrinkable="true">
+								<mc:data>
+									<!-- <mc:ComparisonMicroChartData	title="Available Campus Area" value="{
+										type:'sap.ui.model.type.Float',
+										formatOptions:{
+											decimals:0
+										},
+										path:'json>CummTotalCampusArea'
+										}" color="Neutral"/> -->
+										<mc:ComparisonMicroChartData	title="Available Campus Area" value="11484" color="Neutral"/>
+									<!-- <mc:ComparisonMicroChartData	title="Building Roof Top Area" value="{
+										type:'sap.ui.model.type.Float',
+										formatOptions:{
+											decimals:0
+										},
+										path:'json>CummRooftopArea'
+										}" color="Good"/> -->
+									<mc:ComparisonMicroChartData	title="Building Roof Top Area" value="7768" color="Good"/>
+									<!-- <mc:ComparisonMicroChartData	title="Area Used for RWH System" value="{
+										type:'sap.ui.model.type.Float',
+										formatOptions:{
+											decimals:0
+										},
+										path:'json>CummAreaCovered'
+										}" color="Error"/> -->
+									<mc:ComparisonMicroChartData	title="Area Used for RWH System" value="6224" color="Error"/>
+								</mc:data>
+							</mc:ComparisonMicroChart>
+							<mc:ComparisonMicroChart size="M" scale="K.Liters" press="press" width="16rem" shrinkable="true">
+								<mc:data>
+									<mc:ComparisonMicroChartData	title="Exp. Annual Rain Water Yield" value="7184.99" color="Critical"/>
+								</mc:data>
+							</mc:ComparisonMicroChart>
+						</VBox>
+						
+					</f:content>
+				</f:Card>
+				
+				<f:Card>
+					<f:header>
+						<card:Header title="Annual Water Consumption" subtitle="1841 KL Water Used"/>
+					</f:header>
+					<f:content>
+						<HBox>
+							<mc:ColumnMicroChart showBottomLabels="true" size="S" class="sapUiSmallMargin" allowColumnLabels="true" columns="{path:'json>/WaterConsumptionAggregation'}">
+								<mc:columns>
+									<mc:ColumnMicroChartData value="{json>TotalConsumption}" color="{
+										path:'json>Purpose',
+										formatter:'.chartColorIndexFormatter'
+									}" label="{json>Purpose}"/>
+								</mc:columns>
+							</mc:ColumnMicroChart>
+							<VBox items="{json>/WaterConsumptionAggregation}">
+								<HBox>
+									<core:Icon src="sap-icon://chevron-phase-2" class="sapUiTinyMarginTop" color="{
+										path:'json>Purpose',
+										formatter:'.chartColorIndexFormatter'
+									}"/>
+									<Text text="{json>Purpose}" class="globalGrowthIndex sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+								</HBox>
+							</VBox>
+						</HBox>
+					</f:content>
+				</f:Card>
+				
+			</l:Grid>
+			
+			<l:Grid hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+				<VBox>
+					<layoutData>
+						<l:GridData span="L6"/>
+					</layoutData>
+					<!-- <Toolbar>
+						<Label text="Year :"/>
+						<Slider min="2020" max="2022" width="10rem" showAdvancedTooltip="true" value="2022" liveChange="mapYearChanged"/>
+						<ToolbarSpacer/>
+						<Label text="Analytic Parameter"/>
+						<Select>
+							<core:Item text="Water Conservation Index" key="WaterConservationIndex"/>
+						</Select>
+					</Toolbar> -->
+					
+					<VBox>
+						<vbm:AnalyticMap
+							id="locationsMap" initialZoom="4" xmlns:vbm="sap.ui.vbm" width="100%" xmlns:l="sap.ui.layout" height="27rem" initialPosition="79;20;0"
+							>
+							<vbm:vos>
+								<vbm:Spots >
+									<vbm:Spot click="selectRegion" position="80.1693;13.066956;0" tooltip="Chennai" type="Success"
+										text="CDC"/>
+									<vbm:Spot click="" position="77.566667;12.966667;0" tooltip="Bengaluru" type="Warning"
+									text="BDC"/>
+									<vbm:Spot click="" position="88.3702152;22.5655734;0" tooltip="Kolkata" type="Warning"
+									text="KDC"/>
+									<vbm:Spot click="" position="77.208889;28.613889;0" tooltip="Delhi" type="Warning"
+									text="DDC"/>
+									<vbm:Spot click="" position="72.825833;18.975;0" tooltip="Mumbai" type="Warning"
+									text="MDC"/>
+								</vbm:Spots>
+							</vbm:vos>
+						</vbm:AnalyticMap>
+					</VBox>
+					<!-- <HBox width="100%" class="analytic-map-gradient">
+						<Text text="{json>/MinWaterConservationIndex}%"/>
+						
+						<Text text="{json>/MaxWaterConservationIndex}%"/>
+					</HBox> -->
+				</VBox>
+				<VBox>
+					<layoutData>
+						<l:GridData span="L6"/>
+					</layoutData>
+					<!-- <smartchart:SmartChart enableAutoBinding="true"
+						id="waterUsageChart"
+						entitySet="GlobalAnalyticalReport" useVariantManagement="false"
+						useChartPersonalisation="true"
+						header="Water Conservation Analytics" showFullScreenButton="true"
+						showChartTooltip="true" showDrillBreadcrumbs="false"
+						showDetailsButton="false" showDrillButtons="false"
+						showSemanticNavigationButton="false"
+						height="calc(100vh - 19rem)"
+						app:dateFormatSettings='\{"pattern":"y MMMM d"\}'
+						uiStateChange="onUiStateChange">
+						<smartchart:toolbar>
+							<OverflowToolbar>
+								<ToolbarSpacer/>
+								<OverflowToolbarButton icon="sap-icon://activate" tooltip="Sort by name in ascending order via UI state" press="applyUIState" type="Transparent"/>
+							</OverflowToolbar>
+						</smartchart:toolbar>
+						<smartchart:semanticObjectController>
+							<sl:SemanticObjectController
+						navigationTargetsObtained="onNavigationTargetsObtained" navigate="onNavigate" />
+						</smartchart:semanticObjectController>
+					</smartchart:SmartChart> -->
+					<HBox  >
+						<f:Card width="21rem">
+							<f:header>
+								<card:Header title="Water Price" subtitle="Price by water types"/>
+							</f:header>
+							<f:content>
+								<VBox class="sapUiSmallMargin" binding="{json>/RainWaterHarvestingInfrastructureCumulatives/0}">
+									<mc:ComparisonMicroChart size="M" scale="₹/L" press="press" width="16rem" shrinkable="true">
+										<mc:data>
+											<mc:ComparisonMicroChartData	title="Conserved Water" value="0" color="Good"/>
+											<mc:ComparisonMicroChartData	title="Muncipality water" value="25" color="Critical"/>
+											<mc:ComparisonMicroChartData	title="Third Party" value="15" color="Error"/>
+										</mc:data>
+									</mc:ComparisonMicroChart>
+									<!-- <mc:ComparisonMicroChart size="M" scale="K.Liters" press="press" width="16rem" shrinkable="true">
+										<mc:data>
+											<mc:ComparisonMicroChartData	title="Exp. Annual Rain Water Yield" value="7184.99" color="Critical"/>
+										</mc:data>
+									</mc:ComparisonMicroChart> -->
+								</VBox>
+								
+							</f:content>
+						</f:Card>
+						<f:Card class="sapUiSmallMarginBegin" width="21rem">
+							<f:header>
+								<card:Header title="Water consumption by employee" subtitle=""/>
+							</f:header>
+							<f:content>
+								<HBox>	
+									<VBox class="sapUiTinyMarginBegin">
+										<NumericContent value="160" scale="K" withMargin="false" class=""
+											valueColor="Neutral" 
+											press="press" />
+										<Text text="Total number of employees" class="globalGrowthIndex"/>
+									</VBox>
+									<VBox class="sapUiTinyMarginBegin">
+										<NumericContent value="1005" scale="L" withMargin="false" class=""
+											valueColor="Neutral" indicator="Up"
+											press="press" />
+										<Text text="water consumed per employee" class="globalGrowthIndex"/>
+									</VBox>
+								</HBox>
+							</f:content>
+						</f:Card>
+					</HBox>
+					<Table headerText="Device Alerts" class="sapUiSmallMarginTop">
+						<columns>
+							<Column>
+								<Text text="Location"/>
+							</Column>
+							<Column hAlign="End">
+								<Text text="Alert"/>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem type="Active" press="openDevice">
+								<Text text="Chennai"/>
+								<ObjectStatus state="Success" text="Operational" icon="sap-icon://message-success"/>
+							</ColumnListItem>
+							<ColumnListItem>
+								<Text text="Mumbai"/>
+								<ObjectStatus state="Warning" text="Inoperative" icon="sap-icon://alert"/>
+							</ColumnListItem>
+							<ColumnListItem>
+								<Text text="Bengaluru"/>
+								<ObjectStatus state="Warning" text="Inoperative" icon="sap-icon://alert"/>
+							</ColumnListItem>
+							<ColumnListItem>
+								<Text text="Kolkata"/>
+								<ObjectStatus state="Warning" text="Inoperative" icon="sap-icon://alert"/>
+							</ColumnListItem>
+							<ColumnListItem>
+								<Text text="Delhi"/>
+								<ObjectStatus state="Warning" text="Inoperative" icon="sap-icon://alert"/>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</VBox>
+			</l:Grid>
+			
+		<!-- </ScrollContainer> -->
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Image  src="img/robotics.png" width="2rem" press="chatBotPress" tooltip="AquaGenie" />
+				<!-- <Button icon="sap-icon://comment" type="Transparent" text="AquaGenie"/> -->
+				
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

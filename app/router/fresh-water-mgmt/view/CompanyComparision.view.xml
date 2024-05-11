@@ -1,0 +1,455 @@
+<mvc:View
+    controllerName="com.hcltech.sapeu.fresh-water-mgmt.controller.CompanyComparision"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:table="sap.ui.table"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+    xmlns:l="sap.ui.layout"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:mc="sap.suite.ui.microchart"
+    xmlns:sl="sap.ui.comp.navpopover"
+    xmlns:commons="sap.suite.ui.commons"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:smartchart="sap.ui.comp.smartchart"
+>
+   <Page showHeader ="false"> 
+    <Title text="Together our Impact to Water Conservation" textAlign="Center" width="100%" class="sapUiSmallMargin"/>
+
+    <HBox class="together">
+        <VBox class="sapMGT sapUiSmallMargin" height="11rem" width="23rem" >
+        <ObjectIdentifier title="Conserved Water" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd" />
+        <Label text="Water Conserved in FY 22-23" class="sapUiTinyMargin"/>
+        <HBox class="sapUiSmallMarginTop">
+            <Image src="img/save.png" height ="3rem" width="3rem" class="sapUiTinyMarginBegin"/>
+                
+            <ObjectStatus text="62.42%" state="Error" class="sapUiTinyMargin bold" width="6rem"/>
+            <Label width="14rem" text="Cumulative of Water used from all sources vs Green sources across ecosystem partners" wrapping="true" class="sapUiTinyMarginBegin" />
+            
+        </HBox>
+        
+            <!-- <mc:RadialMicroChart
+                size="L"
+                percentage="68.42"
+                valueColor="Critical"
+                class="sapUiSmallMargin"
+                alignContent="Center"
+            />
+            <Text
+                text="Water Conserved in FY 22-23"
+                textAlign="Center"
+                width="100%"
+            /> -->
+        </VBox>
+        
+        <!-- <VBox>
+            <mc:HarveyBallMicroChart
+                size="L"
+                total="40"
+                totalScale="ML"
+                press="press"
+                class="sapUiSmallMargin"
+                alignContent="Center"
+            >
+                <mc:items>
+                    <mc:HarveyBallMicroChartItem
+                        fraction="28"
+                        color="Good"
+                        fractionScale="ML"
+                    />
+                </mc:items>
+            </mc:HarveyBallMicroChart>
+            <Text
+                text="Water Recharged in FY 22-23"
+                textAlign="Center"
+                width="100%"
+            />
+        </VBox> -->
+        <VBox class="sapMGT sapUiSmallMargin " height="11rem" width="24rem" >
+            <ObjectIdentifier title="Recharged Water" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd" />
+            <Label text="Water Recharged in FY 22-23" class="sapUiTinyMargin"/>
+            <HBox class="sapUiSmallMarginTop">
+                <Image src="img/water.png" height ="3rem" width="3rem" class="sapUiTinyMarginBegin"/>
+                <ObjectStatus text="28ML/40ML" state="Success" class="sapUiTinyMargin bold" width="6rem"/>
+                <Label width="14rem" text="Overall Ground water withdrawen vs Water Recharged across ecosystem partners" wrapping="true" class="sapUiTinyMarginBegin" />
+            </HBox>
+        </VBox>
+        
+    </HBox>
+    <Panel expandable="false" expanded="true" headerText="Our water conservation indicators">
+        <HBox class="together">
+            <VBox class="sapUiSmallMargin">
+            <HBox >
+                <Image src="img/save.png" height ="3rem" width="3rem" />
+                <NumericContent value="75.42" scale="Percent"
+            valueColor="Good"  
+            press="press" />
+            </HBox>
+            <Label text="Water Conservation"/>
+            </VBox>
+            <VBox class="sapUiSmallMargin">
+            <HBox >
+            <Image src="img/revenue.png" height ="3rem" width="3rem" />
+                <NumericContent value="1.73" scale="ML/$B"
+            valueColor="Critical" 
+            press="press" />
+            </HBox>
+            <Label text="Water Intensity(Revenue)"/>
+            </VBox>
+            <VBox class="sapUiSmallMargin">
+            <HBox >
+            <Image src="img/employees.png" height ="3rem" width="3rem" />
+                <NumericContent value="0.77" scale="KL/Emp"
+            valueColor="Good" 
+            press="press" />
+            </HBox>
+            <Label text="Water Intensity(Employees)"/>
+            </VBox>
+        </HBox>
+        <Text textAlign="End" width="100%" text="* Indicators synced on: {json>/syncedTimeStamp}"/>
+    </Panel>
+    <VBox backgroundDesign="Solid">
+        <l:Grid defaultSpan="L2 M4 S12">
+            <VBox class="sapUiTinyMarginTop">
+                <Label text="Select Companies" />
+                <MultiComboBox
+                    showClearIcon="true"
+                    showSelectAll="true"
+                    selectionChange="applyAnalyticFilters"
+                    id="companySelection"
+                >
+                    <core:Item
+                        key="Boxtron"
+                        text="Boxtron"
+                    />
+                    <core:Item
+                        key="Caterex"
+                        text="Caterex"
+                    />
+                    <core:Item
+                        key="Sinolex"
+                        text="Sinolex"
+                    />
+                    <core:Item
+                        key="Tamtex"
+                        text="Tamtex"
+                    />
+                </MultiComboBox>
+            </VBox>
+            <VBox class="sapUiTinyMarginTop">
+                <Label text="Select Period" />
+                <ComboBox
+                    selectionChange="periodChange"
+                    selectedKey="{json>/aggregatePeriod}"
+                >
+                    <core:Item
+                        key="3"
+                        text="3 Months"
+                    />
+                    <core:Item
+                        key="6"
+                        text="6 Months"
+                    />
+                    <core:Item
+                        key="12"
+                        text="1 Year"
+                    />
+                    <core:Item
+                        key="24"
+                        text="2 Years"
+                    />
+                    <core:Item
+                        key="36"
+                        text="3 Years"
+                    />
+                </ComboBox>
+            </VBox>
+        </l:Grid>
+    </VBox>
+
+    <l:Grid
+        defaultSpan="L4 M6 S12"
+        width="100%"
+    >
+        <commons:ChartContainer
+            showFullScreen="true"
+            showPersonalization="true"
+            autoAdjustHeight="true"
+            width="100%"
+            personalizationPress="attachPersonalizationPress"
+            contentChange="attachContentChange"
+            title="Water Conservation Index"
+        >
+            <commons:content>
+                <commons:ChartContainerContent>
+                    <commons:content>
+                        <viz:VizFrame
+                            uiConfig="{applicationSet:'fiori'}"
+                            height='12rem'
+                            width="100%"
+                            vizProperties="{
+								plotArea:{
+									drawingEffect:'Glossy',
+									window: {
+										start: 'firstDataPoint',
+										end: 'lastDataPoint'
+									},
+									marker:{
+										displayMode:'manual',
+										visible:false
+									}
+									
+								},
+								valueAxis: {
+									title: {
+										visible: false
+									}
+								},
+								timeAxis: {
+									title: {
+										visible: false
+									}
+								},
+								title:{visible: false}
+								}"
+                            vizType='timeseries_line'
+                        >
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset
+                                    id="WaterConsumptionTrendDataset"
+                                    data="{
+														path:'json>/PeerComparision'
+													}"
+                                >
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition
+                                            name="Month"
+                                            value="{json>Month}"
+                                            dataType="date"
+                                        />
+                                        <viz.data:DimensionDefinition
+                                            name="CompanyName"
+                                            value="{json>CompanyName}"
+                                        />
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition
+                                            name="Water Conservation"
+                                            value="{json>WaterConservationIndex}"
+                                        />
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem
+                                    uid="valueAxis"
+                                    type="Measure"
+                                    values="Water Conservation"
+                                />
+                                <viz.feeds:FeedItem
+                                    uid="timeAxis"
+                                    type="Dimension"
+                                    values="Month"
+                                />
+                                <viz.feeds:FeedItem
+                                    uid="color"
+                                    type="Dimension"
+                                    values="CompanyName"
+                                />
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </commons:content>
+                </commons:ChartContainerContent>
+            </commons:content>
+        </commons:ChartContainer>
+        <commons:ChartContainer
+            showFullScreen="true"
+            showPersonalization="true"
+            autoAdjustHeight="true"
+            width="100%"
+            personalizationPress="attachPersonalizationPress"
+            contentChange="attachContentChange"
+            title="Water Intensity (KL/M$ Revenue)"
+        >
+            <commons:content>
+                <commons:ChartContainerContent>
+                    <commons:content>
+                        <viz:VizFrame
+                            uiConfig="{applicationSet:'fiori'}"
+                            height='12rem'
+                            width="100%"
+                            vizProperties="{
+								plotArea:{
+									drawingEffect:'Glossy',
+									window: {
+										start: 'firstDataPoint',
+										end: 'lastDataPoint'
+									},
+									marker:{
+										displayMode:'manual',
+										visible:false
+									}
+									
+								},
+								valueAxis: {
+									title: {
+										visible: false
+									}
+								},
+								timeAxis: {
+									title: {
+										visible: false
+									}
+								},
+								title:{visible: false}
+								}"
+                            vizType='timeseries_line'
+                        >
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset
+                                    id="WaterIntensityRevenueDataset"
+                                    data="{
+														path:'json>/PeerComparision'
+													}"
+                                >
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition
+                                            name="Month"
+                                            value="{json>Month}"
+                                            dataType="date"
+                                        />
+                                        <viz.data:DimensionDefinition
+                                            name="CompanyName"
+                                            value="{json>CompanyName}"
+                                        />
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition
+                                            name="Water Intensity"
+                                            value="{json>WaterIntensityRevenue}"
+                                        />
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem
+                                    uid="valueAxis"
+                                    type="Measure"
+                                    values="Water Intensity"
+                                />
+                                <viz.feeds:FeedItem
+                                    uid="timeAxis"
+                                    type="Dimension"
+                                    values="Month"
+                                />
+                                <viz.feeds:FeedItem
+                                    uid="color"
+                                    type="Dimension"
+                                    values="CompanyName"
+                                />
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </commons:content>
+                </commons:ChartContainerContent>
+            </commons:content>
+        </commons:ChartContainer>
+        <commons:ChartContainer
+            showFullScreen="true"
+            showPersonalization="true"
+            autoAdjustHeight="true"
+            width="100%"
+            personalizationPress="attachPersonalizationPress"
+            contentChange="attachContentChange"
+            title="Water Intensity (KL/Employee)"
+        >
+            <commons:content>
+                <commons:ChartContainerContent>
+                    <commons:content>
+                        <viz:VizFrame
+                            uiConfig="{applicationSet:'fiori'}"
+                            height='12rem'
+                            width="100%"
+                            vizProperties="{
+								plotArea:{
+									drawingEffect:'Glossy',
+									window: {
+										start: 'firstDataPoint',
+										end: 'lastDataPoint'
+									},
+									marker:{
+										displayMode:'manual',
+										visible:false
+									}
+									
+								},
+								valueAxis: {
+									title: {
+										visible: false
+									}
+								},
+								timeAxis: {
+									title: {
+										visible: false
+									}
+								},
+								title:{visible: false}
+								}"
+                            vizType='timeseries_line'
+                        >
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset
+                                    id="WaterIntensityEmployeeDataset"
+                                    data="{
+														path:'json>/PeerComparision'
+													}"
+                                >
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition
+                                            name="Month"
+                                            value="{json>Month}"
+                                            dataType="date"
+                                        />
+                                        <viz.data:DimensionDefinition
+                                            name="CompanyName"
+                                            value="{json>CompanyName}"
+                                        />
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition
+                                            name="Water Intensity"
+                                            value="{json>WaterIntensityEmployee}"
+                                        />
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem
+                                    uid="valueAxis"
+                                    type="Measure"
+                                    values="Water Intensity"
+                                />
+                                <viz.feeds:FeedItem
+                                    uid="timeAxis"
+                                    type="Dimension"
+                                    values="Month"
+                                />
+                                <viz.feeds:FeedItem
+                                    uid="color"
+                                    type="Dimension"
+                                    values="CompanyName"
+                                />
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </commons:content>
+                </commons:ChartContainerContent>
+            </commons:content>
+        </commons:ChartContainer>
+    </l:Grid>
+    </Page>
+</mvc:View>

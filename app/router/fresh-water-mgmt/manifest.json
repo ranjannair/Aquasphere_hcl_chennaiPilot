@@ -1,0 +1,161 @@
+{
+	"_version": "1.1.0",
+	"sap.app": {
+		"_version": "1.1.0",
+		"id": "com.hcltech.sapeu.fresh-water-mgmt",
+		"type": "component",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"dataSources": {
+			"OData": {
+				"uri": "/v2/odata/v4/catalog/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0"
+				}
+			}
+		},
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponentForManifest",
+			"version": "0.0.0"
+		}
+	},
+	"sap.ui": {
+		"_version": "1.1.0",
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://activate",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": ["sap_hcb", "sap_bluecrystal"]
+	},
+	"sap.ui5": {
+		"_version": "1.1.0",
+		"rootView": {
+			"viewName": "com.hcltech.sapeu.fresh-water-mgmt.view.App",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.hcltech.sapeu.fresh-water-mgmt.i18n.i18n"
+				}
+			},
+			"json": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"preload": false,
+				"uri": ""
+			},
+			"": {
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "TwoWay",
+					"defaultCountMode": "Request",
+					"useBatch":false
+				},
+				"dataSource": "OData",
+				"preload": true
+			}
+		},
+		"resources": {
+			"css": [{
+				"uri": "css/style.css"
+			}],
+			"js": []
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewPath": "com.hcltech.sapeu.fresh-water-mgmt.view",
+				"controlId": "rootApp",
+				"controlAggregation": "pages"
+			},
+			"targets": {
+				"Home": {
+					"viewType": "XML",
+					"viewName": "Home",
+					"viewLevel": 2
+				},
+				"ObjectDetail": {
+					"viewType": "XML",
+					"viewName": "ObjectDetail",
+					"viewLevel": 3
+				},
+				"Infrastructure": {
+					"viewType": "XML",
+					"viewName": "Infrastructure",
+					"viewLevel": 4
+				},
+				"Launch": {
+					"viewType": "XML",
+					"viewName": "Launch",
+					"viewLevel": 1
+				},
+				"CompanyComparision": {
+					"viewType": "XML",
+					"viewName": "CompanyComparision",
+					"viewLevel": 3
+				}
+			},
+			"routes": [{
+				"name": "Home",
+				"pattern": "",
+				"titleTarget": "",
+				"greedy": true,
+				"target": ["Home"]
+			},{
+				"name": "ObjectDetail",
+				"pattern": "Region/{region}",
+				"titleTarget": "",
+				"greedy": true,
+				"target": ["ObjectDetail"]
+			},{
+				"name": "Infrastructure",
+				"pattern": "Infrastructure/{id}/:deviceId:",
+				"titleTarget": "",
+				"greedy": true,
+				"target": ["Infrastructure"]
+			},{
+				"name": "Launch",
+				"pattern": "Launch",
+				"titleTarget": "",
+				"greedy": true,
+				"target": ["Launch"]
+			},{
+				"name": "CompanyComparision",
+				"pattern": "PeerComparision",
+				"titleTarget": "",
+				"greedy": true,
+				"target": ["CompanyComparision"]
+			}]
+		}
+	}
+}

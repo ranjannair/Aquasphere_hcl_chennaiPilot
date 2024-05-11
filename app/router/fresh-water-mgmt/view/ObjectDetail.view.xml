@@ -1,0 +1,477 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.hcltech.sapeu.fresh-water-mgmt.controller.ObjectDetail"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:ui="sap.ui.table"
+	xmlns:card="sap.f.cards"
+	xmlns:mc="sap.suite.ui.microchart"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:sl="sap.ui.comp.navpopover"
+	xmlns:smartchart="sap.ui.comp.smartchart"
+	xmlns:commons="sap.suite.ui.commons"
+	xmlns:sfb="sap.ui.comp.smartfilterbar"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:f="sap.f"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:custom="com.hcltech.sapeu.fresh-water-mgmt.custom" >
+	<ScrollContainer vertical="true" height="calc(100vh - 2.8rem)">
+		<l:Grid hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+			<f:Card >
+				<f:header>
+					<card:Header title="Daily water conservation index" subtitle=""/>
+				</f:header>
+				<f:content>
+					<HBox width="100%">
+					<mc:ColumnMicroChart id="waterConservationIndexChart" size="M" press="press" class="waterConservationIndexChart sapUiTinyMarginBeginEnd sapUiSmallMarginTopBottom" >
+						<mc:columns>
+							<mc:ColumnMicroChartData value="" color="#525DF4"/>
+							<mc:ColumnMicroChartData value="" color="#19A979"/>
+						</mc:columns>
+						<mc:leftBottomLabel>
+							<mc:ColumnMicroChartLabel label="Water Used"/>
+						</mc:leftBottomLabel>
+						<mc:rightBottomLabel>
+							<mc:ColumnMicroChartLabel label="Water Conserved"/>
+						</mc:rightBottomLabel>
+					</mc:ColumnMicroChart>
+					<VBox class="sapUiTinyMarginBegin">
+						<NumericContent tooltip="75.42 in 2021 vs 68.71 in 2022" value="{json>/realTimeData/0/conservedWater}" scale="%" withMargin="false" class=""
+							valueColor="Good" indicator="Up"
+							press="press" />
+						<Text text="" class="globalGrowthIndex"/>
+					</VBox>
+					
+					</HBox>
+				</f:content>
+			</f:Card>
+			<f:Card>
+				<f:header>
+					<card:Header title="Water sources" subtitle="consumption from different sources" />
+				</f:header>
+				<f:content>
+					<VBox class="sapUiSmallMargin">
+					<mc:ComparisonMicroChart maxValue="100" scale="%" view="Wide" press="press" width="16rem" shrinkable="true">
+						<mc:data>
+							<mc:ComparisonMicroChartData	title="Conserved Water" value="0"  color="Good"/>
+							<mc:ComparisonMicroChartData	title="Municipal Water" value="100" color="Critical"/>
+							<mc:ComparisonMicroChartData	title="Third Party" value="0" color="Error"/>
+						</mc:data>
+					</mc:ComparisonMicroChart>
+					<!-- <Link text="More Info..." press="callApi"/> -->
+					</VBox>
+				</f:content>
+			</f:Card>
+			<f:Card>
+				<f:header>
+					<card:Header title="Water Price" subtitle="Price by water types"/>
+				</f:header>
+				<f:content>
+					<VBox class="sapUiSmallMargin" binding="{json>/RainWaterHarvestingInfrastructureCumulatives/0}">
+						<mc:ComparisonMicroChart size="M" scale="₹/L" press="press" width="16rem" shrinkable="true">
+							<mc:data>
+								<mc:ComparisonMicroChartData	title="Conserved Water" value="0" color="Good"/>
+								<mc:ComparisonMicroChartData	title="Muncipality water" value="0.25" color="Critical"/>
+								<mc:ComparisonMicroChartData	title="Third Party" value="5" color="Error"/>
+							</mc:data>
+						</mc:ComparisonMicroChart>
+						<!-- <mc:ComparisonMicroChart size="M" scale="K.Liters" press="press" width="16rem" shrinkable="true">
+							<mc:data>
+								<mc:ComparisonMicroChartData	title="Exp. Annual Rain Water Yield" value="7184.99" color="Critical"/>
+							</mc:data>
+						</mc:ComparisonMicroChart> -->
+					</VBox>
+					
+				</f:content>
+			</f:Card>
+			<f:Card>
+				<f:header>
+					<card:Header title="Water consumption by employee" subtitle=""/>
+				</f:header>
+				<f:content>
+					<HBox>	
+						<VBox class="sapUiTinyMarginBegin">
+							<NumericContent value="40" scale="K" withMargin="false" class=""
+								valueColor="Neutral" 
+								press="press" />
+							<Text text="Total number of employees" class="globalGrowthIndex"/>
+						</VBox>
+						<VBox class="sapUiTinyMarginBegin">
+							<NumericContent id="waterUsedPerEmpInChennaiLoc" value="" scale="L" withMargin="false" class=""
+								valueColor="Neutral" indicator="None"
+								press="press" />
+							<Text text="water consumed per employee" class="globalGrowthIndex"/>
+						</VBox>
+					</HBox>
+				</f:content>
+			</f:Card>
+			<l:Grid hSpacing="1" vSpacing="1" >
+				<HBox class="sapUiSmallMarginBegin">
+					<layoutData>
+						<l:GridData span="L6"/>
+					</layoutData>
+					<commons:ChartContainer
+						showFullScreen="true"
+						showPersonalization="true"
+						autoAdjustHeight="true"
+						width="100%"
+						personalizationPress="attachPersonalizationPress"
+						contentChange="attachContentChange"
+						title="Water consumption by purpose(Cumulative index)">
+						<commons:content>
+							<commons:ChartContainerContent>
+								<commons:content>
+									<viz:VizFrame
+										id="idVizFrame1"
+										uiConfig="{applicationSet:'fiori'}"
+										height='12rem'
+										width="100%"
+										vizProperties="{
+											plotArea:{
+												drawingEffect:'Glossy',
+												window: {
+													start: 'firstDataPoint',
+													end: 'lastDataPoint'
+												},
+												marker:{
+													displayMode:'manual',
+													visible:false
+												}
+												
+											},
+											valueAxis: {
+												title: {
+													visible: false
+												}
+											},
+											timeAxis: {
+												title: {
+													visible: false
+												}
+											},
+											title:{visible: false}
+											}"
+										vizType='timeseries_line'>
+										<viz:dataset>
+											<viz.data:FlattenedDataset
+												id="WaterConsumptionTrendDataset"
+												data="{path:'json>/chartData'}"
+											>
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition
+														name="Date"
+														value="{json>ToDate}"
+														dataType="date"
+													/>
+													<viz.data:DimensionDefinition
+														name="Purpose"
+														value="{path:'json>name',formatter:'.chartNameFormatter'}"
+													/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition
+														name="Quantity in L"
+														value="{json>cumulative}"
+													/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem
+												uid="valueAxis"
+												type="Measure"
+												values="Quantity in L"
+											/>
+											<viz.feeds:FeedItem
+												uid="timeAxis"
+												type="Dimension"
+												values="Date"
+											/>
+											<viz.feeds:FeedItem
+												uid="color"
+												type="Dimension"
+												values="Purpose"
+											/>
+										</viz:feeds>
+									</viz:VizFrame>
+								</commons:content>
+							</commons:ChartContainerContent>
+						</commons:content>
+					</commons:ChartContainer>
+					<commons:ChartContainer
+						showFullScreen="true"
+						showPersonalization="true"
+						autoAdjustHeight="true"
+						width="100%"
+						personalizationPress="attachPersonalizationPress"
+						contentChange="attachContentChange"
+						title="Water consumption by purpose(Consumption index)">
+						<commons:content>
+							<commons:ChartContainerContent>
+								<commons:content>
+									<viz:VizFrame
+										id="idVizFrame2"
+										uiConfig="{applicationSet:'fiori'}"
+										height='12rem'
+										width="100%"
+										vizProperties="{
+											plotArea:{
+												drawingEffect:'Glossy',
+												window: {
+													start: 'firstDataPoint',
+													end: 'lastDataPoint'
+												},
+												marker:{
+													displayMode:'manual',
+													visible:false
+												}
+												
+											},
+											valueAxis: {
+												title: {
+													visible: false
+												}
+											},
+											timeAxis: {
+												title: {
+													visible: false
+												}
+											},
+											title:{visible: false}
+											}"
+										vizType='timeseries_line'>
+										<viz:dataset>
+											<viz.data:FlattenedDataset
+												id="WaterConsumptionTrendDataset2"
+												data="{
+																	path:'json>/chartData'
+																}"
+											>
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition
+														name="Date"
+														value="{json>ToDate}"
+														dataType="date"
+													/>
+													<viz.data:DimensionDefinition
+														name="Purpose"
+														value="{path:'json>name',formatter:'.chartNameFormatter'}"
+													/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition
+														name="Quantity in L"
+														value="{json>consumption}"
+													/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem
+												uid="valueAxis"
+												type="Measure"
+												values="Quantity in L"
+											/>
+											<viz.feeds:FeedItem
+												uid="timeAxis"
+												type="Dimension"
+												values="Date"
+											/>
+											<viz.feeds:FeedItem
+												uid="color"
+												type="Dimension"
+												values="Purpose"
+											/>
+										</viz:feeds>
+									</viz:VizFrame>
+								</commons:content>
+							</commons:ChartContainerContent>
+						</commons:content>
+					</commons:ChartContainer>
+				</HBox>	
+			</l:Grid>
+			
+		</l:Grid>
+		
+		<l:Grid hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+			<VBox>
+				<layoutData>
+					<l:GridData span="L6"/>
+				</layoutData>
+				<VBox>
+					<Panel expandable="false" expanded="true" headerText="Water conservation indicators">
+						<HBox class="together">
+							<VBox class="sapUiSmallMargin">
+								<HBox >
+									<Image src="img/revenue.png" height ="3rem" width="3rem" />
+									<NumericContent value="{json>/SensorData/0/totalWaterUsedTodayInChennaiLoc}" scale="₹/day" valueColor="Critical"  press="press" />
+								</HBox>
+								<Label text="Water cost(Daily)"/>
+							</VBox>
+							<VBox class="sapUiSmallMargin">
+								<HBox >
+								<Image src="img/employees.png" height ="3rem" width="3rem" />
+									<NumericContent value="{json>/SensorData/0/waterUsedPerEmpInChennaiLoc}" scale="L/Emp" valueColor="Good" press="press" />
+								</HBox>
+								<Label text="Water Intensity(Employees)"/>
+							</VBox>
+						</HBox>
+						<VBox class="sapUiSmallMargin">
+							<HBox >
+								<Image src="img/save.png" height ="3rem" width="3rem" />
+								<NumericContent value="{json>/SensorData/0/conservedWater}" scale="%" valueColor="Good" press="press" />
+							</HBox>
+							<Label text="Water Conservation"/>
+						</VBox>
+					</Panel>
+				</VBox>
+			</VBox>
+			<VBox>
+				<layoutData>
+					<l:GridData span="L6"/>
+				</layoutData>
+				<Panel expandable="false" expanded="true" headerText="Cumulative water consumption details">
+					<!-- <VBox >
+						<HBox class="together">
+							<VBox class="sapUiSmallMargin">
+								<HBox >
+								<Image src="img/waterConsumption2.png" height ="3rem" width="3rem" />
+									<NumericContent value="{json>/SensorData/0/consumption}" scale="L" valueColor="Good" press="press" />
+								</HBox>
+								<Label text="Domestic(per Day)"/>
+							</VBox>
+							<VBox class="sapUiSmallMargin">
+								<HBox >
+								<Image src="img/waterConsumption2.png" height ="3rem" width="3rem" />
+									<NumericContent value="{json>/SensorData/0/cumulative}" scale="L" valueColor="Good" press="press" />
+								</HBox>
+								<Label text="Domestic(Since installed)"/>
+							</VBox>
+						</HBox>
+						<HBox class="together">
+							<VBox class="sapUiSmallMargin">
+								<HBox >
+								<Image src="img/waterConsumption2.png" height ="3rem" width="3rem" />
+									<NumericContent value="{json>/SensorData/1/consumption}" scale="L" valueColor="Good" press="press" />
+								</HBox>
+								<Label text="Flush(per Day)"/>
+							</VBox>
+							<VBox class="sapUiSmallMargin">
+								<HBox >
+								<Image src="img/waterConsumption2.png" height ="3rem" width="3rem" />
+									<NumericContent value="{json>/SensorData/1/cumulative}" scale="L" valueColor="Good" press="press" />
+								</HBox>
+								<Label text="Flush(Since installed)"/>
+							</VBox>
+						</HBox>
+					</VBox> -->
+					<smartTable:SmartTable
+						id="smartTableForSensorData"
+						visible="true"
+						entitySet="FlowEvent"
+						initiallyVisibleFields= "inlet_name,msg_type,timestamp,sensor_id"
+						tableType="ResponsiveTable"
+						useExportToExcel="true"
+						beforeExport="onBeforeExport"
+						useVariantManagement="true"
+						useTablePersonalisation="true"
+						header="Count"
+						showRowCount="true"
+						enableAutoBinding="true"
+						class="sapUiResponsiveContentPadding"
+						enableAutoColumnWidth="true"
+						editTogglable="false"
+						app:useSmartToggle="true"
+						app:useSmartField="true">
+						<ui:Table selectionMode="None" visibleRowCount="5" cellClick="viewApplicationAndUpdateEligibiltiy" >
+						</ui:Table>
+						<!-- <Table mode="None" autoPopinMode="false" fixedLayout="false" itemPress="viewApplicationAndUpdateEligibiltiy">
+							<columns>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nDataKey","columnIndex":"0", "leadingProperty": "msg_type"}' />
+									</customData>
+									<Text text="msg_type" />
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData1Key","columnIndex":"1", "leadingProperty": "sensor_id"}' />
+									</customData>
+									<Text text="sensor_id" />
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData2Key","columnIndex":"2", "leadingProperty": "site_id"}' />
+									</customData>
+									<Text text="site_id" />
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData3Key","columnIndex":"3","leadingProperty": "site_name"}' />
+									</customData>
+									<Text text="site_name" />
+								</Column>
+								<Column >
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData4Key","columnIndex":"4","leadingProperty": "block_name"}' />
+									</customData>
+									<Text text="block_name" />
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData5Key","columnIndex":"5","leadingProperty": "unit_id"}' />
+									</customData>
+									<Text text="unit_id" />
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData5Key","columnIndex":"5","leadingProperty": "unit_name"}' />
+									</customData>
+									<Text text="unit_name" />
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData5Key","columnIndex":"5","leadingProperty": "inlet_name"}' />
+									</customData>
+									<Text text="inlet_name" />
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData5Key","columnIndex":"5","leadingProperty": "cumulative"}' />
+									</customData>
+									<Text text="cumulative" />
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData"  value='\{"columnKey": "p13nData5Key","columnIndex":"5","leadingProperty": "timestamp"}' />
+									</customData>
+									<Text text="timestamp" />
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem type="Active" demandPopin="false">
+									<cells>
+										<Text text="{msg_type}" />
+										<Text text="{String}" />
+										<Text text="{sensor_id}" />
+										<Text text="{site_id}" />
+										<Text text="{site_name}" />
+										<Text text="{block_name}" />
+										<Text text="{unit_id}" />
+										<Text text="{unit_name}" />
+										<Text text="{inlet_name}" />  
+   										<Text text="{cumulative}" />
+										<Text text="{path:'timestamp'}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table> -->
+						
+					</smartTable:SmartTable>
+				</Panel>
+			</VBox>
+		</l:Grid>
+			
+	</ScrollContainer>
+</mvc:View>

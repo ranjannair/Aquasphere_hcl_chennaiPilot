@@ -1,0 +1,128 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+    xmlns:commons="sap.suite.ui.commons"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:core="sap.ui.core">
+    <Dialog title="Device Information" class="sapUiResponsiveContentPadding">
+        <l:Grid defaultSpan="L4 M6 S12" binding="{json>/SensorData/0}">
+            <Image src="img/wegt.png" width="100%"/>
+			<VBox class="sapUiLargeMarginTop">
+			    <layoutData>
+                    <l:GridData span="L8 M6 S12"/>
+                </layoutData>
+				<ObjectStatus title="Status" text="Operational" state="Success" icon="sap-icon://message-success"></ObjectStatus>
+				<ObjectAttribute class="sapUiTinyMarginTop" text="{
+					path:'json>timeOfLastDataPulledFromApi',
+					type: 'sap.ui.model.type.DateTime',
+					formatOptions: {
+						style: 'medium'
+					}
+				}" title="Last Updated"/>
+				<ObjectAttribute class="sapUiTinyMarginTop" text="{json>totalWaterUsed}L between {
+					path:'json>FromDate',
+					type: 'sap.ui.model.type.Date',
+					formatOptions: {
+						style: 'medium'
+					}
+				} and {
+					path:'json>ToDate',
+					type: 'sap.ui.model.type.Date',
+					formatOptions: {
+						style: 'medium'
+					}
+				}" title="Usage"/>
+				
+			</VBox>
+            
+			
+            <VBox>
+                <Title text="Installation Sub-location"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="{json>block}" title="Building"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="{json>unit}" title="Unit"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="East Wing" title="Wing"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="Washroom" title="Room"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="Valve 2" title="Device"/>
+            </VBox>
+            <VBox>
+                <Title text="Material Master Data"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="{json>sensorNames}" title="Sensor Id's"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="20-09-2023" title="Installation Date"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="In Warranty" title="Warranty Coverage"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="NA" title="Last Service Date"/>
+                <ObjectAttribute class="sapUiTinyMarginTop" text="WEGoT" title="Service Contact"/>
+            </VBox>
+			<VBox>
+                
+			</VBox>
+            <VBox>
+                <layoutData>
+                    <l:GridData span="L8 M6 S12"/>
+                </layoutData>
+
+                <commons:ChartContainer
+							showFullScreen="true"
+							showPersonalization="true"
+							autoAdjustHeight="true"
+							personalizationPress="attachPersonalizationPress"
+							contentChange="attachContentChange"
+							title="Water Consumption Trend">
+							<commons:content>
+								<commons:ChartContainerContent>
+									<commons:content>
+										<viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" height='12rem' width="100%" vizProperties="{
+												plotArea:{
+													
+													isSmoothed:true,
+													window: {
+														start: 'firstDataPoint',
+														end: 'lastDataPoint'
+													},
+													marker:{
+														displayMode:'manual',
+														visible:false
+													}
+												},
+												valueAxis: {
+													title: {
+														visible: false
+													}
+												},
+												title:{visible: false}
+												}" vizType='timeseries_line'>
+											<viz:dataset>
+												<viz.data:FlattenedDataset data="{path:'json>/SensorTrend2'}">
+													<viz.data:dimensions>
+														<viz.data:DimensionDefinition name="Date" value="{path:'json>timestamp',formatter:'.chartFormatterForTimeStamp'}"  dataType="date"/>
+														<viz.data:DimensionDefinition
+														name="inlet"
+														value="{path:'json>inlet_name',formatter:'.chartNameFormatter'}"
+														
+													/>
+													</viz.data:dimensions>
+													<viz.data:measures>
+														<viz.data:MeasureDefinition name="Water Consumption" value="{json>cumulative}" />
+													</viz.data:measures>
+												</viz.data:FlattenedDataset>
+											</viz:dataset>
+											<viz:feeds>
+												<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Water Consumption" />
+												<viz.feeds:FeedItem uid="timeAxis" type="Dimension" values="Date"/>
+												<viz.feeds:FeedItem uid="color" type="Dimension" values="inlet"/>
+											</viz:feeds>
+										</viz:VizFrame>
+									</commons:content>
+								</commons:ChartContainerContent>
+							</commons:content>
+						</commons:ChartContainer>
+            </VBox>
+        </l:Grid>
+        <endButton>
+            <Button design="Emphasized" press="handleClose" text="Close"
+            class="sapUiTinyMarginTop sapUiTinyMarginBottom" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

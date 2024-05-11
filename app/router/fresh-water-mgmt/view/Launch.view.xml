@@ -1,0 +1,204 @@
+<mvc:View controllerName="com.hcltech.sapeu.fresh-water-mgmt.controller.Launch" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:w="sap.ui.integration.widgets"
+	xmlns:f="sap.f"
+	xmlns:cssgrid="sap.ui.layout.cssgrid"
+	xmlns:micro="sap.suite.ui.microchart"
+	xmlns:viz="sap.viz.ui5.controls" 
+	xmlns:layout="sap.ui.layout"
+    xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:vizData="sap.viz.ui5.data"
+	>
+	<Page showHeader="false">	
+	
+		
+		<VBox >
+			<Title text="Water Management" level="H3" class="sapUiTinyMargin"/>
+			<HBox class="sapUiTinyMarginTop">
+				<SlideTile class="sapUiTinyMargin">
+					<layoutData>
+						<f:GridContainerItemLayoutData minRows="2" columns="4" />
+					</layoutData>
+					<GenericTile
+						url="https://www.businessworld.in/article/Indian-industry-Can-Lead-The-Way-In-Water-Conservation/29-07-2019-174078/"
+						backgroundImage="img/water_conservation1.jpg"
+						frameType="TwoByOne" press="pressOnTileOne">
+						<TileContent>
+							<NewsContent
+								contentText="Indian Industry Can Lead The Way In Water Conservation"
+								subheader="29 July, 2019, Business World" />
+						</TileContent>
+					</GenericTile>
+					<GenericTile
+						backgroundImage="https://ui5.sap.com/test-resources/sap/m/demokit/sample/SlideTile/images/NewsImage1.png"
+						frameType="TwoByOne" press="pressOnTileTwo">
+						<TileContent footer="August 21, 2016">
+							<NewsContent
+								contentText="Wind Map: Monitoring Real-Time and Forecasted Wind Conditions across the Globe"
+								subheader="Today, SAP News" />
+						</TileContent>
+					</GenericTile>
+				</SlideTile>
+				
+				<GenericTile url="#/Home" press="openURL" frameType="OneByOne" class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="AquaSphere Dashboard">
+					<TileContent unit="ML / $B" footer="Water Intensity">
+						<NumericContent value="1.73" icon="img/save-water.png" withMargin="false" />
+					</TileContent>
+				</GenericTile>
+				<!-- <w:Card manifest="{cards>/object}" action="onAction" class="sapUiTinyMargin" width="20rem" height="11rem">
+					<w:layoutData>
+						<f:GridContainerItemLayoutData minRows="2" columns="3" />
+					</w:layoutData>
+				</w:Card> -->
+			</HBox>
+			<Title text="Energy Management" level="H3" class="sapUiTinyMargin"/>
+			<HBox>
+				<SlideTile class="sapUiTinyMargin">
+					<layoutData>
+						<f:GridContainerItemLayoutData minRows="2" columns="4" />
+					</layoutData>
+					<GenericTile url="https://blogs.worldbank.org/opendata/sustainable-development-and-demand-energy"
+						backgroundImage="img/sustainableEnergy.jpg"
+						frameType="TwoByOne" press="pressOnTileOne">
+						<TileContent>
+							<NewsContent
+								contentText="Sustainable energy is the best answer to our energy crisis"
+								subheader="MAY 04, 2016, World Bank Blogs" />
+						</TileContent>
+					</GenericTile>
+					<GenericTile url="https://www.routledge.com/blog/article/what-is-sustainable-energy-and-why-do-we-need-it"
+						backgroundImage="img/sustainableEnergy2.jpg"
+						frameType="TwoByOne" press="pressOnTileTwo">
+						<TileContent footer="March 24, 2022">
+							<NewsContent
+								contentText="Sustainable energy meets our demand for energy without any risk of going bad or running out."
+								subheader="Routledge" />
+						</TileContent>
+					</GenericTile>
+				</SlideTile>
+				<GenericTile press="press" header="Global Energy Mix" subheader="FY 2022" frameType="TwoByOne" class="sapUiTinyMarginTop sapUiTinyMarginBegin">
+					<tileContent>
+						<TileContent footer="Non-renewable energy" >
+							<content>
+								<micro:RadialMicroChart size="Responsive" percentage="82" valueColor="Error"  class="sapUiTinyMarginBottom"/>
+							</content>
+						</TileContent>
+						<TileContent footer="Renewable energy" >
+							<content>
+								<micro:RadialMicroChart size="Responsive" percentage="18"  valueColor="Good" class="sapUiTinyMarginBottom"/>
+							</content>
+						</TileContent>
+					</tileContent>
+				</GenericTile>
+			</HBox>
+			<Title text="Waste Management" level="H3" class="sapUiTinyMargin"/>
+			<HBox>
+				<SlideTile class="sapUiTinyMargin">
+					<layoutData>
+						<f:GridContainerItemLayoutData minRows="2" columns="4" />
+					</layoutData>
+					<GenericTile url="https://www.indiatoday.in/information/story/waste-disposal-and-management-all-you-need-to-know-1718288-2020-09-04"
+						backgroundImage="img/wasteManagement1.jpg"
+						frameType="TwoByOne" press="pressOnTileOne">
+						<TileContent>
+							<NewsContent
+								contentText="Sustainable waste management aims to keep materials in use for as long as possible and minimize the amount of  waste that is disposed of in landfill"
+								subheader="Sep 4, 2020 ,India Today" />
+						</TileContent>
+					</GenericTile>
+					<GenericTile backgroundImage="img/wasteManagement2.jpg"
+						frameType="TwoByOne" press="pressOnTileTwo">
+						<TileContent footer="Dec 8,2020">
+							<NewsContent
+								contentText="Sustainable waste management is a central part of a broader circular economy"
+								subheader="rts.com" />
+						</TileContent>
+					</GenericTile>
+				</SlideTile>
+				<GenericTile press="press" header="Global waste index" subheader="FY 2022" frameType="TwoByOne" class="sapUiTinyMarginTop sapUiTinyMarginBegin">
+					<tileContent>
+						<TileContent footer="" >
+							<content>
+								<micro:ComparisonMicroChart scale="KG" view="Wide" press="press" width="32rem"  shrinkable="true">
+								<micro:data>
+									<micro:ComparisonMicroChartData	title="South Korea" value="400" color="Neutral"/>
+									<micro:ComparisonMicroChartData	title="Denmark" value="845" color="Neutral"/>
+									<micro:ComparisonMicroChartData	title="Germany" value="632"  color="Neutral"/>
+									<micro:ComparisonMicroChartData	title="Switzerland" value="706"  color="Neutral"/>
+								</micro:data>
+							</micro:ComparisonMicroChart>
+							</content>
+						</TileContent>
+						
+					</tileContent>
+				</GenericTile>
+			</HBox>
+			
+		</VBox>
+		
+		
+		<!-- <Table width="23rem" class="sapUiTinyMargin" >
+		<headerToolbar>
+			<OverflowToolbar>
+				<content>
+					<Title text="Water recharge structures" level="H2"/>
+				</content>
+			</OverflowToolbar>
+		</headerToolbar>
+		<columns>
+			<Column
+				width="12em">
+				<Text text="Location" />
+			</Column>
+			<Column >
+				<Text text="Activity" />
+			</Column>
+			<Column >
+				<Text text="Water recharge 2021-22(CuM/KL)" />
+			</Column>
+			
+		</columns>
+		<items>
+				<ColumnListItem  >
+				<cells>
+					<ObjectIdentifier title="Gautam Buddha Nagar"/>
+					<Text text="Desilting" />
+					<Text text="5,805,613" />
+				</cells>
+				</ColumnListItem>
+				<ColumnListItem >
+				<cells>
+					<ObjectIdentifier title="Rajasthan"/>
+					<Text text="Desilting, Pond and Anicut" />
+					<Text text="366,172" />
+				</cells>
+				</ColumnListItem>
+				<ColumnListItem >
+				<cells>
+					<ObjectIdentifier title="Madurai"/>
+					<Text text="Removal of Prosopis" />
+					<Text text="8,163,016" />
+				</cells>
+				</ColumnListItem>
+				<ColumnListItem >
+				<cells>
+					<ObjectIdentifier title="Chennai"/>
+					<Text text="Pond" />
+					<Text text="8,163,016" />
+				</cells>
+				</ColumnListItem>
+				<ColumnListItem >
+				<cells>
+					<ObjectIdentifier title="Vijayawada"/>
+					<Text text="Desilting" />
+					<Text text="351,591" />
+				</cells>
+				</ColumnListItem>
+		</items>
+	</Table> -->
+	
+	
+	</Page>
+		
+	
+</mvc:View>

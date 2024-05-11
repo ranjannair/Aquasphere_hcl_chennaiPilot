@@ -1,0 +1,399 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.hcltech.sapeu.fresh-water-mgmt.controller.Infrastructure"
+	xmlns:custom="com.hcltech.sapeu.fresh-water-mgmt.custom"
+	xmlns:commons="sap.suite.ui.commons"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:l="sap.ui.layout">
+	<Page showHeader="false">
+	<Panel backgroundDesign="Solid">
+		<l:Grid defaultSpan="L2 M4 S12">
+			<!-- <VBox>
+				<Label text="Select Locations"/>
+				<MultiComboBox showClearIcon="true"
+				showSelectAll="true"
+				selectionChange="applyAnalyticFilters"
+				id="campusSelection"
+				items="{
+					path: '/Infrastructure',
+					sorter: { path: 'Campus' }
+				}">
+					<core:Item key="{ID}" text="{Campus}" />
+				</MultiComboBox>
+			</VBox> -->
+			<VBox>
+				<Label text="Select Period" />
+				<ComboBox selectionChange="periodChange" selectedKey="{json>/aggregatePeriod}">
+					<core:Item key="3" text="3 Months" />
+					<core:Item key="6" text="6 Months" />
+					<core:Item key="12" text="1 Year" />
+					<core:Item key="24" text="2 Years" />
+					<core:Item key="36" text="3 Years" />
+				</ComboBox>
+			</VBox>
+			<VBox>
+				<layoutData>
+					<l:GridData span="L4 M6 S12"/>
+				</layoutData>
+				<Label text="Date Range : {
+						path:'json>/fromMonth',
+						formatter:'.Formatter.monthCalculation'
+					} - {
+						path:'json>/toMonth',
+						formatter:'.Formatter.monthCalculation'
+					}"/>
+				<RangeSlider step="3" showAdvancedTooltip="true" class="analyticDateRangeSlider" min="-60" max="0" id="rangeSlider" liveChange="applyAnalyticFilters">
+					<customTooltips>
+						<custom:DateSliderTooltip/>
+						<custom:DateSliderTooltip/>
+					</customTooltips>
+				</RangeSlider>
+			</VBox>
+		</l:Grid>
+		</Panel>
+		<l:Grid hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+			<VBox>
+				<layoutData>
+					<l:GridData span="L4"/>
+				</layoutData>
+				<commons:ChartContainer
+						showFullScreen="true"
+						showPersonalization="false"
+						autoAdjustHeight="false"
+						personalizationPress="attachPersonalizationPress"
+						contentChange="attachContentChange"
+						title="Water Quality Index">
+					<commons:content>
+						<commons:ChartContainerContent
+						icon="sap-icon://line-chart">
+							<commons:content>
+								<viz:VizFrame uiConfig="{applicationSet:'fiori'}" height='20rem' width="100%" vizProperties="{
+												plotArea:{
+													drawingEffect:'Glossy',
+													window: {
+														start: 'firstDataPoint',
+														end: 'lastDataPoint'
+													},
+													marker:{
+														displayMode:'manual',
+														visible:false
+													}
+													
+												},
+												valueAxis: {
+													title: {
+														visible: false
+													}
+												},
+												categoryAxis: {
+													title: {
+														visible: false
+													}
+												},
+												title:{visible: false}
+												}" vizType='column'>
+											<viz:dataset>
+												<viz.data:FlattenedDataset
+													id="WaterQualityDataset"
+													data="{
+														parameters:{
+															expand:'Infrastructure'
+														},
+														path:'/MonthlyWaterConsumption'
+													}">
+													<viz.data:dimensions>
+														<viz.data:DimensionDefinition axis="1" name="Month" value="{path:'Month',
+															type: 'sap.ui.model.type.Date',
+															formatOptions: {
+																pattern: 'MMM-yyyy'
+															}
+															}" dataType="date"/>
+														<viz.data:DimensionDefinition axis="2" name="Infrastructure" value="{Infrastructure/Campus}"/>
+													</viz.data:dimensions>
+													<viz.data:measures>
+														<viz.data:MeasureDefinition name="Water Quality Index" value="{WaterQualityIndex}" />
+													</viz.data:measures>
+												</viz.data:FlattenedDataset>
+											</viz:dataset>
+											<viz:feeds>
+												<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Water Quality Index" />
+												<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month"/>
+												<viz.feeds:FeedItem uid="color" type="Dimension" values="Infrastructure"/>
+											</viz:feeds>
+										</viz:VizFrame>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+				</commons:ChartContainer>
+			</VBox>
+			<VBox>
+				<layoutData>
+					<l:GridData span="L8"/>
+				</layoutData>
+				<commons:ChartContainer
+						showFullScreen="true"
+						showPersonalization="false"
+						autoAdjustHeight="false"
+						personalizationPress="attachPersonalizationPress"
+						contentChange="attachContentChange"
+						title="Water Consumption by Purposes">
+					<commons:content>
+						<commons:ChartContainerContent
+						icon="sap-icon://line-chart">
+							<commons:content>
+								<viz:VizFrame uiConfig="{applicationSet:'fiori'}" height='20rem' width="100%" vizProperties="{
+												plotArea:{
+													drawingEffect:'Glossy',
+													isSmoothed:true,
+													window: {
+														start: 'firstDataPoint',
+														end: 'lastDataPoint'
+													},
+													marker:{
+														displayMode:'manual',
+														visible:false
+													},
+													dataPoint:{
+														stroke:{
+															visible:true
+														}
+													}
+												},
+												valueAxis: {
+													title: {
+														visible: false
+													}
+												},
+												title:{visible: false}
+												}" vizType='column'>
+									<viz:dataset>
+										<viz.data:FlattenedDataset id="WaterConsumptionByPurposes" data="{path:'/ConsumptionAnalytics'}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition axis="1" name="Month" value="{path:'Month',
+															type: 'sap.ui.model.type.Date',
+															formatOptions: {
+																pattern: 'MMM-yyyy'
+															}
+													}"  dataType="date"/>
+												<viz.data:DimensionDefinition axis="2" name="Purpose" value="{Purpose}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Water Consumption" value="{Quantity}" />
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Water Consumption" />
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month"/>
+										<viz.feeds:FeedItem uid="color" type="Dimension" values="Purpose"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+				</commons:ChartContainer>
+			</VBox>
+			<VBox>
+				<layoutData>
+					<l:GridData span="L9"/>
+				</layoutData>
+				<commons:ChartContainer
+						showFullScreen="true"
+						showPersonalization="false"
+						autoAdjustHeight="false"
+						personalizationPress="attachPersonalizationPress"
+						contentChange="attachContentChange"
+						title="Water Planning (Water Required vs Rainfall Expected)">
+					<commons:content>
+						<commons:ChartContainerContent
+						icon="sap-icon://line-chart">
+							<commons:content>
+								<viz:VizFrame uiConfig="{applicationSet:'fiori'}" height='18rem' width="100%" vizProperties="{
+												plotArea:{
+													drawingEffect:'Glossy',
+													window: {
+														start: 'firstDataPoint',
+														end: 'lastDataPoint'
+													},
+													marker:{
+														displayMode:'manual',
+														visible:false
+													}
+													
+												},
+												valueAxis: {
+													title: {
+														visible: false
+													}
+												},
+												title:{visible: false}
+												}" vizType='timeseries_line'>
+									<viz:dataset>
+										<viz.data:FlattenedDataset
+													id="WaterRequirementForecase"
+													data="{
+														path:'/AnalyticalResults'
+													}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Month" value="{Month}"  dataType="date"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Expected Water Requirement (KL)" value="{WaterRequirement}" />
+												<viz.data:MeasureDefinition name="Expected Rain Water (KL)" value="{WaterType1}" />
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Expected Water Requirement (KL)" />
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Expected Rain Water (KL)" />
+										<viz.feeds:FeedItem uid="timeAxis" type="Dimension" values="Month"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+				</commons:ChartContainer>
+			</VBox>
+			<ScrollContainer vertical="true" height="21rem">
+				<layoutData>
+					<l:GridData span="L3"/>
+				</layoutData>
+				<Table headerText="Device Alerts">
+					<columns>
+						<Column>
+							<Text text="Area"/>
+						</Column>
+						<Column hAlign="End">
+							<Text text="Alert"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem type="Active" press="openDevice">
+							<Text text="block001 - Flat_2 - Washroom - Valve 2"/>
+							<ObjectStatus state="Warning" text="Battery Low" icon="sap-icon://alert"/>
+						</ColumnListItem>
+						<!-- <ColumnListItem>
+							<Text text="Tower 3 - Floor 2 - Washroom - Valve 2"/>
+							<ObjectStatus state="Error" text="Connect Error" icon="sap-icon://error"/>
+						</ColumnListItem>
+						<ColumnListItem>
+							<Text text="Tower 3 - Floor 2 - Washroom - Valve 2"/>
+							<ObjectStatus state="Error" text="Leak Detected" icon="sap-icon://example"/>
+						</ColumnListItem> -->
+					</items>
+				</Table>
+			</ScrollContainer>
+			<VBox>
+				<layoutData>
+					<l:GridData span="L12"/>
+				</layoutData>
+				<commons:ChartContainer
+						showFullScreen="true"
+						showPersonalization="false"
+						autoAdjustHeight="false"
+						personalizationPress="attachPersonalizationPress"
+						contentChange="attachContentChange"
+						title="Water Sources">
+					<commons:content>
+						<commons:ChartContainerContent
+						icon="sap-icon://line-chart">
+							<commons:content>
+								<viz:VizFrame uiConfig="{applicationSet:'fiori'}" height='20rem' width="100%" vizProperties="{
+												plotArea:{
+													drawingEffect:'Glossy',
+													window: {
+														start: 'firstDataPoint',
+														end: 'lastDataPoint'
+													},
+													marker:{
+														displayMode:'manual',
+														visible:false
+													}
+													
+												},
+												valueAxis: {
+													title: {
+														visible: false
+													}
+												},
+												categoryAxis: {
+													title: {
+														visible: false
+													}
+												},
+												title:{visible: false}
+												}" vizType='column'>
+											<viz:dataset>
+												<viz.data:FlattenedDataset
+													id="WaterSources"
+													data="{
+														parameters:{
+															expand:'Infrastructure'
+														},
+														path:'/MonthlyWaterConsumption'
+													}">
+													<viz.data:dimensions>
+														<viz.data:DimensionDefinition axis="1" name="Month" value="{path:'Month',
+															type: 'sap.ui.model.type.Date',
+															formatOptions: {
+																pattern: 'MMM-yyyy'
+															}
+															}" dataType="date"/>
+														<viz.data:DimensionDefinition axis="2" name="Infrastructure" value="{Infrastructure/Campus}"/>
+													</viz.data:dimensions>
+													<viz.data:measures>
+														<viz.data:MeasureDefinition name="Green Water (KL)" value="{WaterType1}" />
+													</viz.data:measures>
+													<viz.data:measures>
+														<viz.data:MeasureDefinition name="Blue Water (KL)" value="{WaterType2}" />
+													</viz.data:measures>
+													<viz.data:measures>
+														<viz.data:MeasureDefinition name="Ground Water (KL)" value="{WaterType3}" />
+													</viz.data:measures>
+													<viz.data:measures>
+														<viz.data:MeasureDefinition name="Recycled Water (KL)" value="{WaterType4}" />
+													</viz.data:measures>
+													
+												</viz.data:FlattenedDataset>
+											</viz:dataset>
+											<viz:feeds>
+												<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Green Water (KL)" />
+												<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Blue Water (KL)" />
+												<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Ground Water (KL)" />
+												<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Recycled Water (KL)" />
+												<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month"/>
+												<viz.feeds:FeedItem uid="color" type="Dimension" values="Infrastructure"/>
+											</viz:feeds>
+										</viz:VizFrame>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+				</commons:ChartContainer>
+			</VBox>
+			<VBox>
+				<!-- <layoutData>
+					<l:GridData span="L6"/>
+				</layoutData>
+				<commons:ChartContainer
+						showFullScreen="true"
+						showPersonalization="false"
+						autoAdjustHeight="false"
+						personalizationPress="attachPersonalizationPress"
+						contentChange="attachContentChange"
+						title="Usage Areas">
+					<commons:content>
+						<commons:ChartContainerContent
+						icon="sap-icon://line-chart">
+							<commons:content>
+								<viz:VizFrame height="12rem" width="100%"
+							              uiConfig="{applicationSet:'fiori'}">
+										  </viz:VizFrame>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+				</commons:ChartContainer> -->
+			</VBox>
+		</l:Grid>
+	</Page>
+</mvc:View>
