@@ -1,0 +1,23 @@
+POST http://localhost:4004/readings
+Content-Type: application/json;IEEE754Compatible=true
+# Authorization: Basic alice:
+
+{
+    "msg_type": "check",
+    "sensor_id": "check",
+    "site_id": "c2",
+    "site_name": "w",
+    "block_name": "tr",
+    "unit_id": "yt",
+    "unit_name": "iu",
+    "inlet_name": "ui",
+    "cumulative": 201,
+    "timestamp": "2024-05-12T02:02:02Z"
+}
+
+
+GET http://ec2-3-109-153-122.ap-south-1.compute.amazonaws.com:8080/policy
+Content-Type: application/json;IEEE754Compatible=true
+{
+    "user_input": "How does Confidential and Proprietary Information is handled in HCL?"
+}

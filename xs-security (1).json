@@ -1,0 +1,19 @@
+{
+    "xsappname": "aquasphere-hcl",
+    "tenant-mode": "dedicated",
+    "description": "Aquasphere solution security descriptor",
+    "scopes": [
+        {
+            "name": "uaa.user",
+            "description": "UAA"
+        }
+    ],
+    "attributes": [],
+    "role-templates": [
+        {
+            "name": "Token_Exchange",
+            "description": "UAA",
+            "scope-references": ["uaa.user"]
+        }
+    ]
+}
